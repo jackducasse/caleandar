@@ -59,3 +59,22 @@ var settings={
     ModelChange: model            //(array of objects) new data object to pass into calendar (serving suggestion: passing through only the currently selected month's events if working with large dataset.
   }
 ```
+
+###CSS Themes
+#####Theme 1
+```
+<link rel="stylesheet" href="css/theme1.css"/>
+```
+![theme1.css](http://i.imgur.com/MoBMUEa.png)
+
+#####Theme 2
+```
+<link rel="stylesheet" href="css/theme2.css"/>
+```
+![theme2.css](http://i.imgur.com/6l7VSIL.png)
+
+#####Theme 3
+```
+<link rel="stylesheet" href="css/theme3.css"/>
+```
+![theme3.css](http://i.imgur.com/fsNXVwc.png)
