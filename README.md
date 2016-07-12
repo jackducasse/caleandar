@@ -5,7 +5,7 @@ Let me keep the intro brief. It's a lightweight (about `7.5kb` minified at the t
 ###Installing
 Simply download the caleandar.js file and any of the css themes you'd like. Then include a reference to the file(s) in your html:
 ```
-<script type="text/javascript" src="js/caleandar.js"></script>
+<script type="text/javascript" src="js/caleandar.min.js"></script>
 ```
 plus any of the following optional css files
 ```
