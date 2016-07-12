@@ -25,7 +25,7 @@ An array of event objects to be placed on their respective dates on the calendar
 ######Examples:
 Using Simple links for events:
 ```
-var data = [
+var events = [
   {'Date': new Date(2016, 6, 1), 'Title': 'Doctor appointment at 3:25pm.'},
   {'Date': new Date(2016, 6, 7), 'Title': 'New Garfield movie comes out!', 'Link': 'https://garfield.com'},
   {'Date': new Date(2016, 6, 11), 'Title': '25 year anniversary', 'Link': 'https://www.google.com.au/#q=anniversary+gifts'},
@@ -33,7 +33,7 @@ var data = [
 ```
 Using anonymous functions to instantiate on click:
 ```
-var data = [
+var events = [
   {'Date': new Date(2016, 6, 1), 'Title': 'Doctor appointment at 3:25pm.', 'Link': function(){console.log('Reminder!');}},
   {'Date': new Date(2016, 6, 7), 'Title': 'New Garfield movie comes out!', 'Link': function(){alert("Better not miss the movie!");}},
   {'Date': new Date(2016, 6, 11), 'Title': '25 year anniversary', 'Link': function(){console.debug(document.getElementById('foo'));}},
