@@ -10,16 +10,18 @@ var Calendar = function(model, options, date){
 		Color: '',
 		LinkColor: '',
 		NavShow: true,
+		NavShowYear: true,
 		NavVertical: false,
 		NavLocation: '',
 		DateTimeShow: true,
 		DatetimeLocation: '',
 		EventClick: '',
+		RemoveAnchorHrefIfEventClickGiven: false,	// true: put <a href=#>; false: put <a href=Link>
 		EventTargetWholeDay: false,
 		DisabledDays: [],
 		ModelChange: model,
-		MinDateMonth: new Date(1900, 0, 1), // minimum allowable
-		MaxDateMonth: new Date(2050, 0, 1) // maximum allowable
+		MinDateMonth: new Date(1900, 0, 1), 		// minimum allowable
+		MaxDateMonth: new Date(2050, 0, 1)			// maximum allowable
 	};
 	// Overwriting default values
 	for(var key in options){
@@ -139,21 +141,39 @@ function createCalendar(calendar, element, adjuster){
 	var mainSection = document.createElement('div');
 	mainSection.className += "cld-main";
 
-	function AddDateTime(){
+	function AddDateTime(){ // adds DateTime banner on the top (with current month, year, and nav buttons)
 			var datetime = document.createElement('div');
 			datetime.className += "cld-datetime";
 			if(calendar.Options.NavShow && !calendar.Options.NavVertical){
+				if (calendar.Options.NavShowYear){
+					var rwdYear = document.createElement('div');
+					rwdYear.className += " cld-rwd-year cld-rwd cld-nav";
+					rwdYear.addEventListener('click', function(){createCalendar(calendar, element, -12);} );
+					rwdYear.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,50 75,0 75,100"></polyline></svg>';
+					datetime.appendChild(rwdYear);
+				}
+
 				var rwd = document.createElement('div');
 				rwd.className += " cld-rwd cld-nav";
 				rwd.addEventListener('click', function(){createCalendar(calendar, element, -1);} );
 				rwd.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,50 75,0 75,100"></polyline></svg>';
 				datetime.appendChild(rwd);
+
+				
 			}
 			var today = document.createElement('div');
 			today.className += ' today';
 			today.innerHTML = months[calendar.Selected.Month] + ", " + calendar.Selected.Year;
 			datetime.appendChild(today);
 			if(calendar.Options.NavShow && !calendar.Options.NavVertical){
+				if(calendar.Options.NavShowYear){
+					var fwdYear = document.createElement('div');
+					fwdYear.className += " cld-fwd-year cld-fwd cld-nav";
+					fwdYear.addEventListener('click', function(){createCalendar(calendar, element, 12);} );
+					fwdYear.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,0 75,50 0,100"></polyline></svg>';
+					datetime.appendChild(fwdYear);
+				}
+
 				var fwd = document.createElement('div');
 				fwd.className += " cld-fwd cld-nav";
 				fwd.addEventListener('click', function(){createCalendar(calendar, element, 1);} );
@@ -228,7 +248,11 @@ function createCalendar(calendar, element, adjuster){
 					title.className += "cld-title";
 					if(typeof calendar.Model[n].Link == 'function' || calendar.Options.EventClick){
 						var a = document.createElement('a');
-						a.setAttribute('href', '#');
+						if (calendar.Options.RemoveAnchorHrefIfEventClickGiven) {
+							a.setAttribute('href', '#');
+						}else{
+							a.setAttribute('href', calendar.Model[n].Link);
+						}
 						a.innerHTML += calendar.Model[n].Title;
 						if(calendar.Options.EventClick){
 							var z = calendar.Model[n].Link;
