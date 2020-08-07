@@ -1,4 +1,4 @@
-######v0.0.1
+######v0.1.1
 #Caleandar 
 Let me keep the intro brief. It's a lightweight (about `7.5kb` minified at the time of writing) and library-independent calendar script with optional themes. You can add events to the calendar and add functionality on click of the event. That's about the jist of it. Continue reading for instructions on how to use and examples.
 
@@ -63,14 +63,16 @@ var settings={
     NavVertical: false,           //(bool) show previous and coming months.
     NavLocation: '#foo',          //(string - element) where to display navigation, if not in default position.
     DateTimeShow: true,           //(bool) show current date.
-    DateTimeFormat: 'mmm, yyyy',  //(string - dateformat) format previously mentioned date is shown in.
     DatetimeLocation: '',         //(string - element) where to display previously mentioned date, if not in default position.
     EventClick: '',               //(function) a function that should instantiate on the click of any event. parameters passed in via data link attribute.
     EventTargetWholeDay: false,   //(bool) clicking on the whole date will trigger event action, as opposed to just clicking on the title.
     DisabledDays: [],             //(array of numbers) days of the week to be slightly transparent. ie: [1,6] to fade Sunday and Saturday.
-    ModelChange: model            //(array of objects) new data object to pass into calendar (serving suggestion: passing through only the currently selected month's events if working with large dataset.
+    ModelChange: model,           //(array of objects) new data object to pass into calendar (serving suggestion: passing through only the currently selected month's events if working with large dataset.   
+    MinDateMonth: new Date(1900, 0, 1), // (Date) minimum allowable (first valid) month
+    MaxDateMonth: new Date(2050, 0, 1)  // (Date) maximum allowable (last valid) month
   }
 ```
+* Remember, when using `new Date(2020, 0, 1)` is January 1st because months start at 0, but days start at 1. Use the first day of the month (third arg is 0) for MinDateMonth/MaxDateMonth.
 
 ###CSS Themes
 #####Theme 1

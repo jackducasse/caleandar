@@ -1,6 +1,7 @@
 /*
 	Author: Jack Ducasse;
-	Version: 0.1.0;
+	Modified by: Parker Link;
+	Version: 0.1.1;
 	(◠‿◠✿)
 */
 var Calendar = function(model, options, date){
@@ -12,12 +13,13 @@ var Calendar = function(model, options, date){
 		NavVertical: false,
 		NavLocation: '',
 		DateTimeShow: true,
-		DateTimeFormat: 'mmm, yyyy',
 		DatetimeLocation: '',
 		EventClick: '',
 		EventTargetWholeDay: false,
 		DisabledDays: [],
-		ModelChange: model
+		ModelChange: model,
+		MinDateMonth: new Date(1900, 0, 1), // minimum allowable
+		MaxDateMonth: new Date(2050, 0, 1) // maximum allowable
 	};
 	// Overwriting default values
 	for(var key in options){
@@ -44,15 +46,28 @@ var Calendar = function(model, options, date){
 };
 
 function createCalendar(calendar, element, adjuster){
-	if(typeof adjuster !== 'undefined'){
+	// adjuster can be an int (to change the date by a number of months), 
+	if(typeof adjuster === 'number'){
 		var newDate = new Date(calendar.Selected.Year, calendar.Selected.Month + adjuster, 1);
-		calendar = new Calendar(calendar.Model, calendar.Options, newDate);
+	}else if(adjuster instanceof Date){
+		var newDate = new Date(adjuster.valueOf());
+	}
+
+	if(typeof adjuster !== 'undefined'){
+		if(newDate <= calendar.Options.MaxDateMonth && newDate >= calendar.Options.MinDateMonth){
+			calendar = new Calendar(calendar.Model, calendar.Options, newDate);
+		}else{
+			// calendar date should not change, just recreate the current version
+			calendar = new Calendar(calendar.Model, calendar.Options, calendar.Selected);
+		}
 		element.innerHTML = '';
 	}else{
+		// First time creating calendar, not recreating it
 		for(var key in calendar.Options){
 			typeof calendar.Options[key] != 'function' && typeof calendar.Options[key] != 'object' && calendar.Options[key]?element.className += " " + key + "-" + calendar.Options[key]:0;
 		}
 	}
+
 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 	function AddSidebar(){
