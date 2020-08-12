@@ -6,6 +6,9 @@ I forked from the 2016 version in Aug 2020 to make a few minor changes, includin
 * Limiting navigation to a minimum and maximum month.
 * Using a `ClickEvent` without removing the href from the link anchor tag.
 * Navigating forwards/backwards a full year at a time.
+* Allowed `adjuster` argument of `createCalendar()` to accept a Date to set the calendar to a specific date.
+	* This could be used to have links within the web page to link to a certain day, with minor changes to the instantiation process.
+	* However, it was not actually used, and is not thoroughly tested.
 
 Note that I only tested these features with **theme 2**, so there is no guarantee they work with your own application.
 
