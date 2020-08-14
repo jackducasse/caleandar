@@ -21,7 +21,8 @@ var Calendar = function(model, options, date){
 		DisabledDays: [],
 		ModelChange: model,
 		MinDateMonth: new Date(1900, 0, 1), 		// minimum allowable
-		MaxDateMonth: new Date(2050, 0, 1)			// maximum allowable
+		MaxDateMonth: new Date(2050, 0, 1),			// maximum allowable
+		HideHover: false
 	};
 	// Overwriting default values
 	for(var key in options){
@@ -149,7 +150,8 @@ function createCalendar(calendar, element, adjuster){
 					var rwdYear = document.createElement('div');
 					rwdYear.className += " cld-rwd-year cld-rwd cld-nav";
 					rwdYear.addEventListener('click', function(){createCalendar(calendar, element, -12);} );
-					rwdYear.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,50 75,0 75,100"></polyline></svg>';
+					//rwdYear.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,50 75,0 75,100"></polyline></svg>';
+					rwdYear.innerHTML = '<svg height="15" width="15" viewBox="0 0 120 100" fill="rgba(0,0,0,0.5)"><polyline points="60,0 0,50 60,100"></polyline><polyline points="120,0 60,50 120,100"></polyline></svg>';
 					datetime.appendChild(rwdYear);
 				}
 
@@ -166,19 +168,19 @@ function createCalendar(calendar, element, adjuster){
 			today.innerHTML = months[calendar.Selected.Month] + ", " + calendar.Selected.Year;
 			datetime.appendChild(today);
 			if(calendar.Options.NavShow && !calendar.Options.NavVertical){
-				if(calendar.Options.NavShowYear){
-					var fwdYear = document.createElement('div');
-					fwdYear.className += " cld-fwd-year cld-fwd cld-nav";
-					fwdYear.addEventListener('click', function(){createCalendar(calendar, element, 12);} );
-					fwdYear.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,0 75,50 0,100"></polyline></svg>';
-					datetime.appendChild(fwdYear);
-				}
-
 				var fwd = document.createElement('div');
 				fwd.className += " cld-fwd cld-nav";
 				fwd.addEventListener('click', function(){createCalendar(calendar, element, 1);} );
 				fwd.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,0 75,50 0,100"></polyline></svg>';
 				datetime.appendChild(fwd);
+				
+				if(calendar.Options.NavShowYear){
+					var fwdYear = document.createElement('div');
+					fwdYear.className += " cld-fwd-year cld-fwd cld-nav";
+					fwdYear.addEventListener('click', function(){createCalendar(calendar, element, 12);} );
+					fwdYear.innerHTML = '<svg height="15" width="15" viewBox="0 0 120 100" fill="rgba(0,0,0,0.5)"><polyline points="0,0 60,50 0,100"></polyline><polyline points="60,0 120,50 60,100"></polyline></svg>';
+					datetime.appendChild(fwdYear);
+				}
 			}
 			if(calendar.Options.DatetimeLocation){
 				document.getElementById(calendar.Options.DatetimeLocation).innerHTML = "";
@@ -244,8 +246,12 @@ function createCalendar(calendar, element, adjuster){
 				var toDate = new Date(calendar.Selected.Year, calendar.Selected.Month, (i+1));
 				if(evDate.getTime() == toDate.getTime()){
 					number.className += " eventday";
-					var title = document.createElement('span');
+					var title = document.createElement('span'); // title is the floating hover text
 					title.className += "cld-title";
+					if (calendar.Options.HideHover) {
+						// Hide the hover tooltip, as desired
+						title.style.display = "none";
+					}
 					if(typeof calendar.Model[n].Link == 'function' || calendar.Options.EventClick){
 						var a = document.createElement('a');
 						if (calendar.Options.RemoveAnchorHrefIfEventClickGiven) {

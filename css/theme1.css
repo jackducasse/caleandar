@@ -12,13 +12,17 @@
     max-width: 300px;
     margin: auto;
     overflow: hidden;
+    text-align: center;
+  }
+  .cld-datetime>div{
+    display: inline-block;
+    text-align: center;
   }
   .cld-datetime .today{
     position: relative;
-    float: left;
-    width: calc(100% - 40px);
-    margin: auto;
-    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100px;
   }
   .cld-nav{
     position: relative;
@@ -33,10 +37,10 @@
       fill: #666;
   }
   .cld-rwd{
-    float: left;
+    
   }
   .cld-fwd{
-    float: right;
+
   }
     .cld-nav svg:hover{
 

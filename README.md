@@ -69,7 +69,7 @@ var events = [
 Below are all the possible settings attributes with example values.
 ```
 var settings={
-		Color: '#999',                    				//(string - color) font color of whole calendar.
+		Color: '#999',                    					//(string - color) font color of whole calendar.
 		LinkColor: '#333',            						//(string - color) font color of event titles.
 		NavShow: true,                						//(bool) show navigation arrows.
 		NavShowYear: true,            						//(bool) show navigation arrows for years (only tested in theme 2, doesn't work with NavVertical=true)
@@ -78,15 +78,17 @@ var settings={
 		DateTimeShow: true,           						//(bool) show current date.
 		DatetimeLocation: '',         						//(string - element) where to display previously mentioned date, if not in default position.
 		EventClick: '',               						//(function) a function that should instantiate on the click of any event. parameters passed in via data link attribute.
-		RemoveAnchorHrefIfEventClickGiven: false, //(bool) true: put <a href=#>; false: put <a href=Link>
+		RemoveAnchorHrefIfEventClickGiven: false, 			//(bool) true: put <a href=#>; false: put <a href=Link>
 		EventTargetWholeDay: false,   						//(bool) clicking on the whole date will trigger event action, as opposed to just clicking on the title.
 		DisabledDays: [],             						//(array of numbers) days of the week to be slightly transparent. ie: [0,6] to fade Sunday and Saturday.
 		ModelChange: model,           						//(array of objects) new data object to pass into calendar (serving suggestion: passing through only the currently selected month's events if working with large dataset.   
-		MinDateMonth: new Date(1900, 0, 1), 		// (Date) minimum allowable (first valid) month
-		MaxDateMonth: new Date(2050, 0, 1)  		// (Date) maximum allowable (last valid) month
+		MinDateMonth: new Date(1900, 0, 1), 				// (Date) minimum allowable (first valid) month
+		MaxDateMonth: new Date(2050, 0, 1),  				// (Date) maximum allowable (last valid) month
+		HideHover: false									// (bool) whether or not to hide hover text link (so that just clicking the cell will link, if EventClick is set appropriately)
 	}
 ```
 * Remember, when using `new Date(2020, 0, 1)` is January 1st because months start at 0, but days start at 1. Use the first day of the month (third arg is 0) for MinDateMonth/MaxDateMonth.
+* A common EventClick value may be: `function(link) {window.location.href=link;}`.
 
 ### CSS Themes
 #### Theme 1

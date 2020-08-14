@@ -16,13 +16,17 @@
     margin: auto;
     margin-bottom: 15px;
     overflow: hidden;
+    text-align: center;
+  }
+  .cld-datetime>div{
+    display: inline-block;
+    text-align: center;
   }
   .cld-datetime .today{
     position: relative;
-    float: left;
-    width: calc(100% - 100px);
-    margin: auto;
-    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100px;
   }
   .cld-nav{
     position: relative;
@@ -37,16 +41,17 @@
       fill: #005EFF;
   }
   .cld-rwd{
-    float: left;
+
   }
   .cld-fwd{
-    float: right;
+
   }
     .cld-nav svg:hover{
 
     }
 .cld-labels, .cld-days{
   padding-left: 0;
+  margin-left: 0 !important;
 }
   .cld-label, .cld-day{
     box-sizing: border-box;
