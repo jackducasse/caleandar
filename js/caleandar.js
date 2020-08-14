@@ -22,7 +22,8 @@ var Calendar = function(model, options, date){
 		ModelChange: model,
 		MinDateMonth: new Date(1900, 0, 1), 		// minimum allowable
 		MaxDateMonth: new Date(2050, 0, 1),			// maximum allowable
-		HideHover: false
+		HideHover: false,
+		MakeEachCellAnchor: false
 	};
 	// Overwriting default values
 	for(var key in options){
@@ -173,7 +174,7 @@ function createCalendar(calendar, element, adjuster){
 				fwd.addEventListener('click', function(){createCalendar(calendar, element, 1);} );
 				fwd.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,0 75,50 0,100"></polyline></svg>';
 				datetime.appendChild(fwd);
-				
+
 				if(calendar.Options.NavShowYear){
 					var fwdYear = document.createElement('div');
 					fwdYear.className += " cld-fwd-year cld-fwd cld-nav";
@@ -209,11 +210,17 @@ function createCalendar(calendar, element, adjuster){
 			number.innerHTML += n;
 			return number;
 		}
-		var days = document.createElement('ul');
+		if (calendar.Options.MakeEachCellAnchor){
+			var days = document.createElement('div');
+			var dayType = 'a';
+		}else{
+			var days = document.createElement('ul');
+			var dayType = 'li';
+		}
 		days.className += "cld-days";
 		// Previous Month's Days
 		for(var i = 0; i < (calendar.Selected.FirstDay); i++){
-			var day = document.createElement('li');
+			var day = document.createElement(dayType);
 			day.className += "cld-day prevMonth";
 			//Disabled Days
 			var d = i%7;
@@ -230,7 +237,7 @@ function createCalendar(calendar, element, adjuster){
 		}
 		// Current Month's Days
 		for(var i = 0; i < calendar.Selected.Days; i++){
-			var day = document.createElement('li');
+			var day = document.createElement(dayType);
 			day.className += "cld-day currMonth";
 			//Disabled Days
 			var d = (i + calendar.Selected.FirstDay)%7;
@@ -248,6 +255,9 @@ function createCalendar(calendar, element, adjuster){
 					number.className += " eventday";
 					var title = document.createElement('span'); // title is the floating hover text
 					title.className += "cld-title";
+					if (calendar.Options.MakeEachCellAnchor) {
+						day.setAttribute('href', calendar.Model[n].Link);
+					}
 					if (calendar.Options.HideHover) {
 						// Hide the hover tooltip, as desired
 						title.style.display = "none";
@@ -303,7 +313,7 @@ function createCalendar(calendar, element, adjuster){
 		else if(days.children.length<29){extraDays = 20;}
 
 		for(var i = 0; i < (extraDays - calendar.Selected.LastDay); i++){
-			var day = document.createElement('li');
+			var day = document.createElement(dayType);
 			day.className += "cld-day nextMonth";
 			//Disabled Days
 			var d = (i + calendar.Selected.LastDay + 1)%7;

@@ -63,6 +63,14 @@
     border: 1px solid #eee;
     margin: 0 !important;
   }
+  .cld-day:not(.clickable){
+	color: black;
+	text-decoration: inherit;
+  }
+  .cld-day:not(.clickable){
+	color: black;
+	text-decoration: inherit;
+  }
   .cld-day.today .cld-number{
     background: #0080FF;
     color: #fff;

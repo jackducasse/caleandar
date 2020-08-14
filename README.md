@@ -5,12 +5,14 @@ Let me keep the intro brief. It's a lightweight (about `7.5kb` minified at the t
 I forked from the 2016 version in Aug 2020 to make a few minor changes, including:
 * Limiting navigation to a minimum and maximum month.
 * Using a `ClickEvent` without removing the href from the link anchor tag.
+* Added option to disable hover text tips.
+* Changed cells to anchors so they can be clicked and opened in new tab (enable `MakeEachCellAnchor = true`).
 * Navigating forwards/backwards a full year at a time.
 * Allowed `adjuster` argument of `createCalendar()` to accept a Date to set the calendar to a specific date.
 	* This could be used to have links within the web page to link to a certain day, with minor changes to the instantiation process.
 	* However, it was not actually used, and is not thoroughly tested.
 
-Note that I only tested these features with **theme 2**, so there is no guarantee they work with your own application.
+Note that I only tested these features with **theme 1 and theme 2**, so there is no guarantee they work with your own application. Testing was not exhaustive, and only minimal testing was done on Theme 1.
 
 ## Installing
 Simply download the caleandar.js file and any of the css themes you'd like. Then include a reference to the file(s) in your html:
@@ -66,7 +68,7 @@ var events = [
 ```
 
 ### Settings
-Below are all the possible settings attributes with example values.
+Below are all the possible settings attributes with example values (the defaults, mostly).
 ```
 var settings={
 		Color: '#999',                    					//(string - color) font color of whole calendar.
@@ -84,7 +86,8 @@ var settings={
 		ModelChange: model,           						//(array of objects) new data object to pass into calendar (serving suggestion: passing through only the currently selected month's events if working with large dataset.   
 		MinDateMonth: new Date(1900, 0, 1), 				// (Date) minimum allowable (first valid) month
 		MaxDateMonth: new Date(2050, 0, 1),  				// (Date) maximum allowable (last valid) month
-		HideHover: false									// (bool) whether or not to hide hover text link (so that just clicking the cell will link, if EventClick is set appropriately)
+		HideHover: false,									// (bool) whether or not to hide hover text link (so that just clicking the cell will link, if EventClick is set appropriately)
+		MakeEachCellAnchor: true							// (bool) whether to change each cell to an anchor tag, so that each cell can easily be opened in a new window
 	}
 ```
 * Remember, when using `new Date(2020, 0, 1)` is January 1st because months start at 0, but days start at 1. Use the first day of the month (third arg is 0) for MinDateMonth/MaxDateMonth.

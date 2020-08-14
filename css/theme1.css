@@ -37,7 +37,7 @@
       fill: #666;
   }
   .cld-rwd{
-    
+
   }
   .cld-fwd{
 
@@ -52,6 +52,14 @@
     display: inline-block;
     width: 14.28%;
     text-align: center;
+  }
+  .cld-day:not(.clickable){
+  color: black;
+  text-decoration: inherit;
+  }
+  .cld-day:not(.clickable){
+  color: black;
+  text-decoration: inherit;
   }
   .cld-day.today .cld-number{
     display: inline-block;
