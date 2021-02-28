@@ -2,6 +2,8 @@
   Author: Jack Ducasse;
   Version: 0.1.0;
   (◠‿◠✿)
+
+  Modifyed by: Victor Andeloci
 */
 var Calendar = function(model, options, date){
   // Default Values
@@ -53,7 +55,7 @@ function createCalendar(calendar, element, adjuster){
       typeof calendar.Options[key] != 'function' && typeof calendar.Options[key] != 'object' && calendar.Options[key]?element.className += " " + key + "-" + calendar.Options[key]:0;
     }
   }
-  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
   function AddSidebar(){
     var sidebar = document.createElement('div');
@@ -155,7 +157,7 @@ function createCalendar(calendar, element, adjuster){
   function AddLabels(){
     var labels = document.createElement('ul');
     labels.className = 'cld-labels';
-    var labelsList = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var labelsList = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
     for(var i = 0; i < labelsList.length; i++){
       var label = document.createElement('li');
       label.className += "cld-label";
@@ -176,8 +178,17 @@ function createCalendar(calendar, element, adjuster){
     days.className += "cld-days";
     // Previous Month's Days
     for(var i = 0; i < (calendar.Selected.FirstDay); i++){
+
+      let strDay = (calendar.Prev.Days - calendar.Selected.FirstDay) + (i+1);
+      let strMonth = (calendar.Selected.Month < 10) ? ('0' + calendar.Selected.Month) : (calendar.Selected.Month);
+      let strYear = calendar.Selected.Year;
+
+      let strDate = strYear + '-' + strMonth + '-' + strDay;
+
       var day = document.createElement('li');
       day.className += "cld-day prevMonth";
+      day.setAttribute('data-date', strDate);
+
       //Disabled Days
       var d = i%7;
       for(var q = 0; q < calendar.Options.DisabledDays.length; q++){
@@ -193,10 +204,19 @@ function createCalendar(calendar, element, adjuster){
     }
     // Current Month's Days
     for(var i = 0; i < calendar.Selected.Days; i++){
+
+      let strDay = (i + 1 < 10) ? '0' + (i + 1) : (i + 1);
+      let strMonth = (calendar.Selected.Month + 1 < 10) ? '0' + (calendar.Selected.Month + 1) : (calendar.Selected.Month + 1);
+      let strYear = calendar.Selected.Year;
+
+      let strDate = strYear + '-' + strMonth + '-' + strDay;
+
       var day = document.createElement('li');
       day.className += "cld-day currMonth";
+      day.setAttribute('data-date', strDate);
       //Disabled Days
       var d = (i + calendar.Selected.FirstDay)%7;
+
       for(var q = 0; q < calendar.Options.DisabledDays.length; q++){
         if(d==calendar.Options.DisabledDays[q]){
           day.className += " disableDay";
@@ -207,8 +227,19 @@ function createCalendar(calendar, element, adjuster){
       for(var n = 0; n < calendar.Model.length; n++){
         var evDate = calendar.Model[n].Date;
         var toDate = new Date(calendar.Selected.Year, calendar.Selected.Month, (i+1));
+
+        let actualDay = new Date();
+
+        let evtClassName = '';
+        if(actualDay < evDate)
+          evtClassName = ' eventday comingEvt';
+        else if(actualDay > evDate)
+          evtClassName = ' eventday previousEvt';
+        else
+          evtClassName = ' eventday';
+
         if(evDate.getTime() == toDate.getTime()){
-          number.className += " eventday";
+          number.className += evtClassName;
           var title = document.createElement('span');
           title.className += "cld-title";
           if(typeof calendar.Model[n].Link == 'function' || calendar.Options.EventClick){
@@ -258,8 +289,16 @@ function createCalendar(calendar, element, adjuster){
     else if(days.children.length<29){extraDays = 20;}
 
     for(var i = 0; i < (extraDays - calendar.Selected.LastDay); i++){
+
+      let strDay = (i + 1 < 10) ? '0' + (i + 1) : (i + 1);
+      let strMonth = (calendar.Selected.Month + 2 < 10) ? '0' + (calendar.Selected.Month + 2) : (calendar.Selected.Month + 2);
+      let strYear = calendar.Selected.Year;
+
+      let strDate = strYear + '-' + strMonth + '-' + strDay;
+
       var day = document.createElement('li');
       day.className += "cld-day nextMonth";
+      day.setAttribute('data-date', strDate);
       //Disabled Days
       var d = (i + calendar.Selected.LastDay + 1)%7;
       for(var q = 0; q < calendar.Options.DisabledDays.length; q++){
