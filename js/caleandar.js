@@ -1,7 +1,7 @@
 /*
   Author: Jack Ducasse;
-  Version: 0.1.0;
-  (◠‿◠✿)
+  Version: 0.2.0;
+  (◠ ‿ ◠ ✿)
 */
 var Calendar = function(model, options, date){
   // Default Values
@@ -14,10 +14,12 @@ var Calendar = function(model, options, date){
     DateTimeShow: true,
     DateTimeFormat: 'mmm, yyyy',
     DatetimeLocation: '',
-    EventClick: '',
+    EventClick: null,
     EventTargetWholeDay: false,
     DisabledDays: [],
-    ModelChange: model
+	ModelChange: model,
+	LabelsMonths: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+	LabelsDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   };
   // Overwriting default values
   for(var key in options){
@@ -53,7 +55,7 @@ function createCalendar(calendar, element, adjuster){
       typeof calendar.Options[key] != 'function' && typeof calendar.Options[key] != 'object' && calendar.Options[key]?element.className += " " + key + "-" + calendar.Options[key]:0;
     }
   }
-  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var months = calendar.Options.LabelsMonths;
 
   function AddSidebar(){
     var sidebar = document.createElement('div');
@@ -155,7 +157,7 @@ function createCalendar(calendar, element, adjuster){
   function AddLabels(){
     var labels = document.createElement('ul');
     labels.className = 'cld-labels';
-    var labelsList = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var labelsList = calendar.Options.LabelsDays;
     for(var i = 0; i < labelsList.length; i++){
       var label = document.createElement('li');
       label.className += "cld-label";
@@ -164,6 +166,57 @@ function createCalendar(calendar, element, adjuster){
     }
     mainSection.appendChild(labels);
   }
+
+  function AddEventToDate(event, date, element){
+	if(!event || !event.Date) return;
+
+	var evDate = event.Date;
+	var eventIsInCurrentMonth = evDate.getMonth() == date.getMonth();
+	var eventIsInCurrentDay = evDate.getDate() == date.getDate();
+	var eventIsOnCurrentDate = eventIsInCurrentMonth && eventIsInCurrentDay;
+	if(eventIsOnCurrentDate){
+		if(!element.classList.contains('eventday')){
+			element.className += " eventday";
+		}
+		var title = document.createElement('span');
+		title.className += "cld-title";
+		var hr = evDate.getHours();
+		var mn = evDate.getMinutes();
+		title.setAttribute('data-time', `${hr < 10 ? `0${hr}` : hr}:${mn ? mn : '00'}`);
+		if(typeof event.Link == 'function' || calendar.Options.EventClick){
+			var a = document.createElement('a');
+			a.setAttribute('href', '#');
+			a.innerHTML += event.Title;
+			if(calendar.Options.EventClick){
+				var z = event.Link;
+				if(typeof event.Link != 'string'){
+					a.addEventListener('click', calendar.Options.EventClick.bind.apply(calendar.Options.EventClick, [null].concat(z)) );
+					if(calendar.Options.EventTargetWholeDay){
+						day.className += " clickable";
+						day.addEventListener('click', calendar.Options.EventClick.bind.apply(calendar.Options.EventClick, [null].concat(z)) );
+					}
+				}else{
+					a.addEventListener('click', calendar.Options.EventClick.bind(null, z) );
+					if(calendar.Options.EventTargetWholeDay){
+					day.className += " clickable";
+					day.addEventListener('click', calendar.Options.EventClick.bind(null, z) );
+					}
+				}
+			} else {
+				a.addEventListener('click', event.Link);
+				if(calendar.Options.EventTargetWholeDay){
+					day.className += " clickable";
+					day.addEventListener('click', event.Link);
+				}
+			}
+			title.appendChild(a);
+		}else{
+			title.innerHTML += '<a href="' + event.Link + '">' + event.Title + '</a>';
+		}
+		element.appendChild(title);
+	}
+  }
+
   function AddDays(){
     // Create Number Element
     function DayNumber(n){
@@ -186,7 +239,15 @@ function createCalendar(calendar, element, adjuster){
         }
       }
 
-      var number = DayNumber((calendar.Prev.Days - calendar.Selected.FirstDay) + (i+1));
+	  var dayOfPrevMonth = (calendar.Prev.Days - calendar.Selected.FirstDay) + (i+1);
+	  var number = DayNumber(dayOfPrevMonth);
+	  
+      for(var n = 0; n < calendar.Model.length; n++){
+		var event = calendar.Model[n];
+		var currentDate = new Date(calendar.Selected.Year, calendar.Selected.Month-1, dayOfPrevMonth);
+		AddEventToDate(event, currentDate, number);
+	  }
+
       day.appendChild(number);
 
       days.appendChild(day);
@@ -205,44 +266,9 @@ function createCalendar(calendar, element, adjuster){
       var number = DayNumber(i+1);
       // Check Date against Event Dates
       for(var n = 0; n < calendar.Model.length; n++){
-        var evDate = calendar.Model[n].Date;
-        var toDate = new Date(calendar.Selected.Year, calendar.Selected.Month, (i+1));
-        if(evDate.getTime() == toDate.getTime()){
-          number.className += " eventday";
-          var title = document.createElement('span');
-          title.className += "cld-title";
-          if(typeof calendar.Model[n].Link == 'function' || calendar.Options.EventClick){
-            var a = document.createElement('a');
-            a.setAttribute('href', '#');
-            a.innerHTML += calendar.Model[n].Title;
-            if(calendar.Options.EventClick){
-              var z = calendar.Model[n].Link;
-              if(typeof calendar.Model[n].Link != 'string'){
-                  a.addEventListener('click', calendar.Options.EventClick.bind.apply(calendar.Options.EventClick, [null].concat(z)) );
-                  if(calendar.Options.EventTargetWholeDay){
-                    day.className += " clickable";
-                    day.addEventListener('click', calendar.Options.EventClick.bind.apply(calendar.Options.EventClick, [null].concat(z)) );
-                  }
-              }else{
-                a.addEventListener('click', calendar.Options.EventClick.bind(null, z) );
-                if(calendar.Options.EventTargetWholeDay){
-                  day.className += " clickable";
-                  day.addEventListener('click', calendar.Options.EventClick.bind(null, z) );
-                }
-              }
-            }else{
-              a.addEventListener('click', calendar.Model[n].Link);
-              if(calendar.Options.EventTargetWholeDay){
-                day.className += " clickable";
-                day.addEventListener('click', calendar.Model[n].Link);
-              }
-            }
-            title.appendChild(a);
-          }else{
-            title.innerHTML += '<a href="' + calendar.Model[n].Link + '">' + calendar.Model[n].Title + '</a>';
-          }
-          number.appendChild(title);
-        }
+		var event = calendar.Model[n];
+		var currentDate = new Date(calendar.Selected.Year, calendar.Selected.Month, (i+1));
+		AddEventToDate(event, currentDate, number);
       }
       day.appendChild(number);
       // If Today..
@@ -259,7 +285,7 @@ function createCalendar(calendar, element, adjuster){
 
     for(var i = 0; i < (extraDays - calendar.Selected.LastDay); i++){
       var day = document.createElement('li');
-      day.className += "cld-day nextMonth";
+	  day.className += "cld-day nextMonth";
       //Disabled Days
       var d = (i + calendar.Selected.LastDay + 1)%7;
       for(var q = 0; q < calendar.Options.DisabledDays.length; q++){
@@ -268,7 +294,14 @@ function createCalendar(calendar, element, adjuster){
         }
       }
 
-      var number = DayNumber(i+1);
+	  var number = DayNumber(i+1);
+	  
+      for(var n = 0; n < calendar.Model.length; n++){
+		var event = calendar.Model[n];
+		var currentDate = new Date(calendar.Selected.Year, calendar.Selected.Month+1, (i+1));
+		AddEventToDate(event, currentDate, number);
+	  }
+
       day.appendChild(number);
 
       days.appendChild(day);

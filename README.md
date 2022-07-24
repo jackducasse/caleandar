@@ -1,8 +1,8 @@
-######v0.0.1
-#Caleandar 
+###### v0.0.1
+# Caleandar 
 Let me keep the intro brief. It's a lightweight (about `7.5kb` minified at the time of writing) and library-independent calendar script with optional themes. You can add events to the calendar and add functionality on click of the event. That's about the jist of it. Continue reading for instructions on how to use and examples.
 
-###Installing
+### Installing
 Simply download the caleandar.js file and any of the css themes you'd like. Then include a reference to the file(s) in your html:
 ```
 <script type="text/javascript" src="js/caleandar.min.js"></script>
@@ -14,16 +14,16 @@ plus any of the following optional css files
 <link rel="stylesheet" href="css/theme3.css"/>
 ```
 
-###Instantiating
+### Instantiating
 At it's simplest, call the `calendar()` function with the following 3 optional parametars:
 ```
 caleandar(element, events, settings);
 ```
 Where `element` is an HTML element, `events` is an array of event objects and `settings` is an object of settings. Pretty straightforward so far.
 
-####Element
+#### Element
 A single HTML element.
-######Examples:
+###### Examples:
 `var element = caleandar(document.querySelector('#foo'));`
 
 `var element = caleandar(document.getElementById('foo'));`
@@ -33,9 +33,9 @@ A single HTML element.
 or if you are using jQuery:
 `var element = caleandar($('#foo'));`
 
-####Events
+#### Events
 An array of event objects to be placed on their respective dates on the calendar.
-######Examples:
+###### Examples:
 Using Simple links for events:
 ```
 var events = [
@@ -53,7 +53,7 @@ var events = [
 ];
 ```
 
-####Settings
+#### Settings
 Below are all the possible settings attributes with example values.
 ```
 var settings={
@@ -68,24 +68,26 @@ var settings={
     EventClick: '',               //(function) a function that should instantiate on the click of any event. parameters passed in via data link attribute.
     EventTargetWholeDay: false,   //(bool) clicking on the whole date will trigger event action, as opposed to just clicking on the title.
     DisabledDays: [],             //(array of numbers) days of the week to be slightly transparent. ie: [1,6] to fade Sunday and Saturday.
-    ModelChange: model            //(array of objects) new data object to pass into calendar (serving suggestion: passing through only the currently selected month's events if working with large dataset.
+    ModelChange: model,           //(array of objects) new data object to pass into calendar (serving suggestion: passing through only the currently selected month's events if working with large dataset.
+    LabelsMonths: [],             // (array) Month names for localisation override. Default to English "January", "Febuary" etc.
+    LabelsDays: [],               // (array) Day names for localisation override. Default to English shortened "Sun", "Mon", "Tue" etc.
   }
 ```
 
-###CSS Themes
-#####Theme 1
+### CSS Themes
+##### Theme 1
 ```
 <link rel="stylesheet" href="css/theme1.css"/>
 ```
 ![theme1.css](http://i.imgur.com/MoBMUEa.png)
 
-#####Theme 2
+##### Theme 2
 ```
 <link rel="stylesheet" href="css/theme2.css"/>
 ```
 ![theme2.css](http://i.imgur.com/6l7VSIL.png)
 
-#####Theme 3
+##### Theme 3
 ```
 <link rel="stylesheet" href="css/theme3.css"/>
 ```
