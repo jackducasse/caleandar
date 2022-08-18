@@ -1,5 +1,7 @@
 .cld-main{
-  width: 330px;
+  width: 100%;
+  min-width: 200px;
+  max-width: 480px;
 }
 .cld-main a{
   color: #333;
