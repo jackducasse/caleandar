@@ -29,10 +29,10 @@ var Calendar = function(model, options, date){
   model?this.Model=model:this.Model={};
   this.Today = new Date();
 
-  this.Selected = this.Today
+  this.Selected = this.Today;
   this.Today.Month = this.Today.getMonth();
   this.Today.Year = this.Today.getFullYear();
-  if(date){this.Selected = date}
+  if(date){this.Selected = date;}
   this.Selected.Month = this.Selected.getMonth();
   this.Selected.Year = this.Selected.getFullYear();
 
@@ -211,7 +211,9 @@ function createCalendar(calendar, element, adjuster){
 			}
 			title.appendChild(a);
 		}else{
-			title.innerHTML += '<a href="' + event.Link + '">' + event.Title + '</a>';
+			var target = "";
+			if (event.Target && typeof event.Target == "string") target = ' target="' + event.Target + '"';
+			title.innerHTML += '<a href="' + event.Link + '"' + target + '>' + event.Title + '</a>';
 		}
 		element.appendChild(title);
 	}
